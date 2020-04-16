@@ -15,12 +15,12 @@
         </router-link>
       </section>
 
-      <form>
-        <input placeholder="Título do caso" />
-        <textarea placeholder="Descrição" />
-        <input placeholder="Valor em reais" />
+      <form @submit.prevent="handleRegister">
+        <input v-model="title" placeholder="Título do caso" />
+        <textarea v-model="description" placeholder="Descrição" />
+        <input v-model="value" placeholder="Valor em reais" />
 
-        <button class="button" type="button">
+        <button class="button" type="submit">
           Cadastrar
         </button>
       </form>
@@ -30,10 +30,29 @@
 
 <script>
 import LogoImg from "../../components/LogoImg.vue";
+import { createNamespacedHelpers } from "vuex";
+import { createHelpers } from "vuex-map-fields";
+
+const { mapFields } = createHelpers({
+  getterType: `incidents/getField`,
+  mutationType: `incidents/updateField`
+});
+const { mapActions } = createNamespacedHelpers("incidents");
+
 export default {
   name: "NewIncidents",
   components: {
     LogoImg
+  },
+  computed: {
+    ...mapFields([
+      "incident.title",
+      "incident.description",
+      "incident.value"
+    ])
+  },
+  methods: {
+    ...mapActions(["handleRegister"])
   }
 };
 </script>

@@ -3,10 +3,10 @@
     <section class="form">
       <LogoImg />
 
-      <form>
+      <form @submit.prevent="handleLogon">
         <h1>Faça seu logon</h1>
 
-        <input v-model="id" placeholder="Sua ID" />
+        <input type="text" v-model="ongId" placeholder="Sua ID" />
 
         <button class="button" type="submit">Entrar</button>
 
@@ -23,11 +23,26 @@
 <script>
 import LogoImg from "../../components/LogoImg";
 import HeroesImg from "../../components/HeroesImg";
+import { createNamespacedHelpers } from "vuex";
+import { createHelpers } from "vuex-map-fields";
+
+const { mapFields } = createHelpers({
+  getterType: `ongs/getField`,
+  mutationType: `ongs/updateField`
+});
+const { mapActions } = createNamespacedHelpers("ongs");
+
 export default {
   name: "Logon",
   components: {
     LogoImg,
     HeroesImg
+  },
+  computed: {
+    ...mapFields(["ongId"])
+  },
+  methods: {
+    ...mapActions(["handleLogon"])
   }
 };
 </script>

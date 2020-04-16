@@ -15,13 +15,13 @@
         </router-link>
       </section>
 
-      <form>
-        <input placeholder="Nome da ONG" />
-        <input type="email" placeholder="E-mail" />
-        <input placeholder="Whatsapp" />
+      <form @submit.prevent="handleRegister">
+        <input v-model="name" placeholder="Nome da ONG" />
+        <input v-model="email" type="email" placeholder="E-mail" />
+        <input v-model="whatsapp" placeholder="Whatsapp" />
         <div class="input-group">
-          <input placeholder="Cidade" />
-          <input placeholder="UF" />
+          <input v-model="city" placeholder="Cidade" />
+          <input v-model="uf" placeholder="UF" />
         </div>
 
         <button class="button" type="submit">
@@ -34,10 +34,30 @@
 
 <script>
 import LogoImg from "../../components/LogoImg.vue";
+import { createNamespacedHelpers } from "vuex";
+import { createHelpers } from "vuex-map-fields";
+
+const { mapFields } = createHelpers({
+  getterType: `ongs/getField`,
+  mutationType: `ongs/updateField`
+});
+const { mapActions } = createNamespacedHelpers("ongs");
 export default {
   name: "Register",
   components: {
     LogoImg
+  },
+  computed: {
+    ...mapFields([
+      "ong.name",
+      "ong.email",
+      "ong.whatsapp",
+      "ong.city",
+      "ong.uf"
+    ])
+  },
+  methods: {
+    ...mapActions(["handleRegister"])
   }
 };
 </script>

@@ -2,43 +2,41 @@
   <div class="profile-container">
     <header>
       <LogoImg />
-      <span>Bem vinda, NOME_ONG</span>
+      <span>Bem vinda, {{ ongName }}</span>
 
       <router-link to="/incidents/new" class="button">
         Cadastrar novo caso
       </router-link>
-      <button type="button">
+      <button @click="handleLogout" type="button">
         SAIR
       </button>
     </header>
 
     <h1>Casos cadastrados</h1>
-
-    <ul>
-      <li>
-        <strong>CASO:</strong>
-        <p>Título do caso</p>
-
-        <strong>DESCRIÇÃO:</strong>
-        <p>Descrição do caso</p>
-
-        <strong>VALOR:</strong>
-        <p>{{ 200 | toMoney }}</p>
-
-        <button type="button">
-          X
-        </button>
-      </li>
-    </ul>
+    <profile-list-incidents />
   </div>
 </template>
 
 <script>
+import { createNamespacedHelpers } from "vuex";
 import LogoImg from "../../components/LogoImg.vue";
+import ProfileListIncidents from "./components/ProfileListIncidents";
+
+const { mapActions } = createNamespacedHelpers("incidents");
+
 export default {
   name: "Profile",
   components: {
-    LogoImg
+    LogoImg,
+    ProfileListIncidents
+  },
+  data() {
+    return {
+      ongName: localStorage.getItem("ongName")
+    };
+  },
+  methods: {
+    ...mapActions(["handleLogout"])
   }
 };
 </script>
